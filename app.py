@@ -1,6 +1,7 @@
 import streamlit as st
 import joblib
-
+import os
+st.write("Files in directory:", os.listdir())
 # Load model
 model = joblib.load("Movie_reviews.pkl")
 
