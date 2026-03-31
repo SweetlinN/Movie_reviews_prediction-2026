@@ -2,15 +2,22 @@ import streamlit as st
 import joblib
 
 # Load model
-model = joblib.load('model.joblib')
+model = joblib.load("Movie_reviews.pkl")
 
-st.title("Review Sentiment Predictor")
+# Title
+st.title("🎬 Movie Review Sentiment Analysis")
 
-user_input = st.text_area("Enter a review:")
+# Input box
+review = st.text_area("Enter your movie review:")
 
+# Predict button
 if st.button("Predict"):
-    if user_input.strip():
-        prediction = model.predict([user_input])
-        st.write("Prediction:", prediction[0])
+    if review.strip() != "":
+        prediction = model.predict([review])
+        
+        if prediction[0] == 1:
+            st.success("😊 Positive Review")
+        else:
+            st.error("😞 Negative Review")
     else:
-        st.write("Please enter some text.")
+        st.warning("Please enter a review")
