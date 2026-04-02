@@ -1,23 +1,16 @@
+import pandas as pd 
+import pickle as pk
+from sklearn.feature_extraction.text import TfidfVectorizer
 import streamlit as st
-import joblib
 
-# Load model
-model = joblib.load("Movie_reviews.pkl")
+model = pk.load(open('model.pkl','rb'))
+scaler = pk.load(open('scaler.pkl','rb'))
+review = st.text_input('Enter Movie Review')
 
-# Title
-st.title("🎬 Movie Review Sentiment Analysis")
-
-# Input box
-review = st.text_area("Enter your movie review:")
-
-# Predict button
-if st.button("Predict"):
-    if review.strip() != "":
-        prediction = model.predict([review])
-        
-        if prediction[0] == 1:
-            st.success("😊 Positive Review")
-        else:
-            st.error("😞 Negative Review")
+if st.button('Predict'):
+    review_scale = scaler.transform([review]).toarray()
+    result = model.predict(review_scale)
+    if result[0] == 0:
+        st.write('Negative Review')
     else:
-        st.warning("Please enter a review")
+        st.write('Positive Review')
